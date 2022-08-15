@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # Warframe blessing formater
 # edit the string for roles you want to assign
 
