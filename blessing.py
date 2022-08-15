@@ -30,7 +30,6 @@ print("========================================================")
 print(f"!Bless pc {region} {relay_name} {relay_instance} 15m ", end = "")
 print(*bless_types[0:total_blessers])
 
-
 # output roles to paste into relay chat
 print("========================================================")
 print(f"BLESSING ROLES: @{affinity_bless} ---> {bless_types[0]} | ", end = "")
