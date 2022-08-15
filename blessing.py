@@ -69,7 +69,6 @@ if total_blessers > 5:
     print(f" | Shield bless will be at xx:01")
 else:
     print()
-
 print("========================================================")
 
 # nag whisper for missing blessers and list for thanks
