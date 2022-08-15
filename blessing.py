@@ -2,6 +2,9 @@
 # Warframe blessing formater
 # edit the string for roles you want to assign
 
+# your name. needed so you don't thank yourself
+my_name = "tenno1"
+
 # assign roles
 affinity_bless = "tenno1"
 credit_bless = "tenno2"
@@ -68,11 +71,14 @@ else:
     print()
 
 print("========================================================")
-# nag whisper for missing blessers. nags assume you are blessing affinity
+
+# nag whisper for missing blessers and list for thanks
 nag_mesage = f"Reminder for bless at {relay_name} {relay_instance}. You'll be on"
-thank_list = [credit_bless]
+thank_list = [affinity_bless]
+print(f"/w {affinity_bless} {nag_mesage} {bless_types[0]}")
 if total_blessers > 1:
     print(f"/w {credit_bless} {nag_mesage} {bless_types[1]}")
+    thank_list.append(credit_bless)
 else:
     pass
 if total_blessers > 2:
@@ -95,7 +101,10 @@ if total_blessers > 5:
     thank_list.append(shield_bless)
 else:
     pass
+
+# thank you message
+thank_list.remove(my_name)
 print ("Thanks to ", end = "")
 print(', '.join(thank_list), end = "")
-print(" for blessing tonight")
+print(" for blessing.")
 print("```")
