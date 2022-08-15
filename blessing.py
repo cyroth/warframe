@@ -32,25 +32,25 @@ print(*bless_types[0:total_blessers])
 
 # output roles to paste into relay chat
 print("========================================================")
-print(f"BLESSING ROLES: @{affinity_bless} ---> {bless_types[0]} | ", end = "")
+print(f"BLESSING ROLES: @{affinity_bless} ---> {bless_types[0].capitalize()} | ", end = "")
 if total_blessers > 1:
-    print(f"@{credit_bless} ---> {bless_types[1]} | ", end = "")
+    print(f"@{credit_bless} ---> {bless_types[1].capitalize()} | ", end = "")
 else:
     pass
 if total_blessers > 2:
-    print(f"@{resource_bless} ---> {bless_types[2]} | ", end = "")
+    print(f"@{resource_bless} ---> {bless_types[2].capitalize()} | ", end = "")
 else:
     pass
 if total_blessers > 3:
-    print(f"@{damage_bless} ---> {bless_types[3]} | ", end = "")
+    print(f"@{damage_bless} ---> {bless_types[3].capitalize()} | ", end = "")
 else:
     pass
 if total_blessers > 4:
-    print(f"@{health_bless} ---> {bless_types[4]} | ", end = "")
+    print(f"@{health_bless} ---> {bless_types[4].capitalize()} | ", end = "")
 else:
     pass
 if total_blessers > 5:
-    print(f"@{shield_bless} ---> {bless_types[5]}  | ", end = "")
+    print(f"@{shield_bless} ---> {bless_types[5].capitalize()}  | ", end = "")
 else:
     pass
 
@@ -61,9 +61,9 @@ now = datetime.datetime.now()
 next_hour = (now + delta).replace(second=0, minute=0)
 wait_minutes = (next_hour - now).seconds/60
 wait_minutes = int(wait_minutes)
-print(f"BLESSING IN {wait_minutes} MINS", end = "")
+print(f"Blessing in {wait_minutes} minutes", end = "")
 if total_blessers > 5:
-    print(f", SHIELD BLESS WILL BE AT xx:01")
+    print(f" | Shield bless will be at xx:01")
 else:
     print()
 
