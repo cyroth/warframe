@@ -72,38 +72,43 @@ else:
 print("========================================================")
 
 # nag whisper for missing blessers and list for thanks
-nag_mesage = f"Reminder for bless at {relay_name} {relay_instance}. You'll be on"
-thank_list = [affinity_bless]
-print(f"/w {affinity_bless} {nag_mesage} {bless_types[0]}")
+nag_mesage = f"Reminder for bless at {relay_name.capitalize()} {relay_instance}. You'll be on"
+roll_call = [affinity_bless]
+print(f"/w {affinity_bless} {nag_mesage} {bless_types[0].capitalize()}")
 if total_blessers > 1:
-    print(f"/w {credit_bless} {nag_mesage} {bless_types[1]}")
-    thank_list.append(credit_bless)
+    print(f"/w {credit_bless} {nag_mesage} {bless_types[1].capitalize()}")
+    roll_call.append(credit_bless)
 else:
     pass
 if total_blessers > 2:
-    print(f"/w {resource_bless} {nag_mesage} {bless_types[2]}")
-    thank_list.append(resource_bless)
+    print(f"/w {resource_bless} {nag_mesage} {bless_types[2].capitalize()}")
+    roll_call.append(resource_bless)
 else:
     pass
 if total_blessers > 3:
-    print(f"/w {damage_bless} {nag_mesage} {bless_types[3]}")
-    thank_list.append(damage_bless)
+    print(f"/w {damage_bless} {nag_mesage} {bless_types[3].capitalize()}")
+    roll_call.append(damage_bless)
 else:
     pass
 if total_blessers > 4:
-    print(f"/w {health_bless} {nag_mesage} {bless_types[4]}")
-    thank_list.append(health_bless)
+    print(f"/w {health_bless} {nag_mesage} {bless_types[4].capitalize()}")
+    roll_call.append(health_bless)
 else:
     pass
 if total_blessers > 5:
-    print(f"/w {shield_bless} {nag_mesage} {bless_types[5]}")
-    thank_list.append(shield_bless)
+    print(f"/w {shield_bless} {nag_mesage} {bless_types[5].capitalize()}")
+    roll_call.append(shield_bless)
 else:
     pass
+print("========================================================")
 
-# thank you message
-thank_list.remove(my_name)
+# roll call and thank you message
+roll_call.remove(my_name)
+print ("Roll call. @", end = "")
+print(' @'.join(roll_call), end = "")
+print(" :clem:")
+print("========================================================")
 print ("Thanks to ", end = "")
-print(', '.join(thank_list), end = "")
-print(" for blessing.")
+print(', '.join(roll_call), end = "")
+print(" for blessing")
 print("```")
