@@ -8,16 +8,19 @@ config.read("bless.ini")
 
 # get values
 my_name = config.get('config', 'my_name')
-affinity_bless = config.get('config', 'affinity_bless')
-credit_bless = config.get('config', 'credit_bless')
-resource_bless = config.get('config', 'resource_bless')
-damage_bless = config.get('config', 'damage_bless')
-health_bless = config.get('config', 'health_bless')
-shield_bless = config.get('config', 'shield_bless')
-relay_name = config.get('config', 'relay_name')
-relay_instance = config.get('config', 'relay_instance')
 region = config.get('config', 'region')
-total_blessers = config.getint('config', 'total_blessers')
+
+relay_name = config.get('bless_setup', 'relay_name')
+relay_instance = config.get('bless_setup', 'relay_instance')
+total_blessers = config.getint('bless_setup', 'total_blessers')
+
+affinity_bless = config.get('roles', 'affinity_bless')
+credit_bless = config.get('roles', 'credit_bless')
+resource_bless = config.get('roles', 'resource_bless')
+damage_bless = config.get('roles', 'damage_bless')
+health_bless = config.get('roles', 'health_bless')
+shield_bless = config.get('roles', 'shield_bless')
+
 bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
 
 print("```")
