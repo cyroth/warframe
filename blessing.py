@@ -1,31 +1,26 @@
 #!/usr/bin/env python3
 # Warframe blessing formater
-# edit the string for roles you want to assign
+
+from configparser import ConfigParser
+import os
+config = ConfigParser()
+config.read("/git/warframe/bless.ini")
+
 
 # your name. needed so you don't thank yourself
-my_name = "tenno1"
-
-# assign roles
-affinity_bless = "tenno1"
-credit_bless = "tenno2"
-resource_bless = "tenno3"
-damage_bless = "tenno4"
-health_bless = "tenno5"
-shield_bless = "tenno6"
-
-# get info for message to paste to #bless in Discord
+my_name = config.get('config', 'my_name')
+affinity_bless = config.get('config', 'affinity_bless')
+credit_bless = config.get('config', 'credit_bless')
+resource_bless = config.get('config', 'resource_bless')
+damage_bless = config.get('config', 'damage_bless')
+health_bless = config.get('config', 'health_bless')
+shield_bless = config.get('config', 'shield_bless')
+relay_name = config.get('config', 'relay_name')
+relay_instance = config.get('config', 'relay_instance')
+total_blessers = config.getint('config', 'total_blessers')
 region = "as"
-bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
-relay_list = ['larunda', 'strata', 'kronia', 'maroo', 'orcus']
-relay_name = None
-print (f"Valid relays {relay_list}")
-while relay_name not in relay_list[0:]:
-    relay_name = input("Relay name? ")
-relay_instance = input("Relay instance? ")
 
-# get count of blessers
-total_blessers = input("How many blessers? ")
-total_blessers = int (total_blessers)
+bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
 
 print("```")
 print("========================================================")
@@ -112,3 +107,4 @@ print ("Thanks to ", end = "")
 print(', '.join(roll_call), end = "")
 print(" for blessing")
 print("```")
+input("Press Enter to continue...")
