@@ -4,7 +4,7 @@
 from configparser import ConfigParser
 import os
 config = ConfigParser()
-config.read("/git/warframe/bless.ini")
+config.read("bless.ini")
 
 # get values
 my_name = config.get('config', 'my_name')
