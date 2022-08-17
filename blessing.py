@@ -6,8 +6,7 @@ import os
 config = ConfigParser()
 config.read("/git/warframe/bless.ini")
 
-
-# your name. needed so you don't thank yourself
+# get values
 my_name = config.get('config', 'my_name')
 affinity_bless = config.get('config', 'affinity_bless')
 credit_bless = config.get('config', 'credit_bless')
