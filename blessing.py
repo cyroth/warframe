@@ -46,24 +46,14 @@ print("========================================================")
 print(f"BLESSING ROLES: @{affinity_bless} ---> {bless_types[0].capitalize()} | ", end = "")
 if total_blessers > 1:
     print(f"@{credit_bless} ---> {bless_types[1].capitalize()} | ", end = "")
-else:
-    pass
 if total_blessers > 2:
     print(f"@{resource_bless} ---> {bless_types[2].capitalize()} | ", end = "")
-else:
-    pass
 if total_blessers > 3:
     print(f"@{damage_bless} ---> {bless_types[3].capitalize()} | ", end = "")
-else:
-    pass
 if total_blessers > 4:
     print(f"@{health_bless} ---> {bless_types[4].capitalize()} | ", end = "")
-else:
-    pass
 if total_blessers > 5:
     print(f"@{shield_bless} ---> {bless_types[5].capitalize()}  | ", end = "")
-else:
-    pass
 
 # calculate and output time until bless
 import datetime
