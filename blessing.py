@@ -12,14 +12,30 @@ region = config.get('config', 'region')
 
 relay_name = config.get('bless_setup', 'relay_name')
 relay_instance = config.get('bless_setup', 'relay_instance')
-total_blessers = config.getint('bless_setup', 'total_blessers')
+total_blessers = 0
+int(total_blessers)
+#total_blessers = config.getint('bless_setup', 'total_blessers')
 
 affinity_bless = config.get('roles', 'affinity_bless')
+if(len(affinity_bless) != 0):
+    total_blessers += 1
 credit_bless = config.get('roles', 'credit_bless')
+if(len(credit_bless) != 0):
+    total_blessers += 1
 resource_bless = config.get('roles', 'resource_bless')
+if(len(resource_bless) != 0):
+    total_blessers += 1
 damage_bless = config.get('roles', 'damage_bless')
+if(len(damage_bless) != 0):
+    total_blessers += 1
 health_bless = config.get('roles', 'health_bless')
+if(len(health_bless) != 0):
+    total_blessers += 1
 shield_bless = config.get('roles', 'shield_bless')
+if(len(shield_bless) != 0):
+    total_blessers += 1
+
+print(total_blessers)
 
 bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
 
