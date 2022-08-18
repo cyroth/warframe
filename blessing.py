@@ -12,10 +12,8 @@ region = config.get('config', 'region')
 
 relay_name = config.get('bless_setup', 'relay_name')
 relay_instance = config.get('bless_setup', 'relay_instance')
-total_blessers = 0
-int(total_blessers)
-#total_blessers = config.getint('bless_setup', 'total_blessers')
 
+total_blessers = 0
 affinity_bless = config.get('roles', 'affinity_bless')
 if(len(affinity_bless) != 0):
     total_blessers += 1
@@ -34,8 +32,6 @@ if(len(health_bless) != 0):
 shield_bless = config.get('roles', 'shield_bless')
 if(len(shield_bless) != 0):
     total_blessers += 1
-
-print(total_blessers)
 
 bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
 
@@ -84,7 +80,7 @@ else:
 print("========================================================")
 
 # nag whisper for missing blessers and list for thanks
-nag_mesage = f"Reminder for bless at {relay_name.capitalize()} {relay_instance}. You'll be on"
+nag_mesage = f"Reminder for bless at {relay_name.capitalize()} {relay_instance} in {region} region. You'll be on"
 roll_call = [affinity_bless]
 print(f"/w {affinity_bless} {nag_mesage} {bless_types[0].capitalize()}")
 if total_blessers > 1:
