@@ -76,28 +76,18 @@ print(f"/w {affinity_bless} {nag_mesage} {bless_types[0].capitalize()}")
 if total_blessers > 1:
     print(f"/w {credit_bless} {nag_mesage} {bless_types[1].capitalize()}")
     roll_call.append(credit_bless)
-else:
-    pass
 if total_blessers > 2:
     print(f"/w {resource_bless} {nag_mesage} {bless_types[2].capitalize()}")
     roll_call.append(resource_bless)
-else:
-    pass
 if total_blessers > 3:
     print(f"/w {damage_bless} {nag_mesage} {bless_types[3].capitalize()}")
     roll_call.append(damage_bless)
-else:
-    pass
 if total_blessers > 4:
     print(f"/w {health_bless} {nag_mesage} {bless_types[4].capitalize()}")
     roll_call.append(health_bless)
-else:
-    pass
 if total_blessers > 5:
     print(f"/w {shield_bless} {nag_mesage} {bless_types[5].capitalize()}")
     roll_call.append(shield_bless)
-else:
-    pass
 print("========================================================")
 
 # roll call and thank you message
@@ -109,5 +99,7 @@ print("========================================================")
 print ("Thanks to ", end = "")
 print(', '.join(roll_call), end = "")
 print(" for blessing")
+if total_blessers > 5:
+    print(f"60 second warning to run away before shield bless")
 print("```")
 input("Press Enter to continue...")
