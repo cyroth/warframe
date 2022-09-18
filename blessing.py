@@ -1,103 +1,110 @@
 #!/usr/bin/env python3
-# Warframe blessing formater
+# Warframe blessing formatter
 
 from configparser import ConfigParser
-import os, datetime
-config = ConfigParser()
-config.read("bless.ini")
+from dataclasses import dataclass
+from enum import Enum
+from typing import TypeVar
+import datetime as dt
+import sys
 
-seperator = "============================================================================"
+T = TypeVar('T')
 
-# get values
-my_name = config.get('config', 'my_name')
-region = config.get('config', 'region')
-relay_name = config.get('bless_setup', 'relay_name')
-relay_instance = config.get('bless_setup', 'relay_instance')
-total_blessers = 0
-affinity_bless = config.get('roles', 'affinity_bless')
-if(len(affinity_bless) != 0):
-    total_blessers += 1
-credit_bless = config.get('roles', 'credit_bless')
-if(len(credit_bless) != 0):
-    total_blessers += 1
-resource_bless = config.get('roles', 'resource_bless')
-if(len(resource_bless) != 0):
-    total_blessers += 1
-damage_bless = config.get('roles', 'damage_bless')
-if(len(damage_bless) != 0):
-    total_blessers += 1
-health_bless = config.get('roles', 'health_bless')
-if(len(health_bless) != 0):
-    total_blessers += 1
-shield_bless = config.get('roles', 'shield_bless')
-if(len(shield_bless) != 0):
-    total_blessers += 1
+def assert_in_enum(string: str, enum: T) -> T:
+    if string not in [variant.value for variant in enum]:
+        print(f"\033[31mInvalid relay: '{string}'\033[0m")
+        print(f"Valid relays are: {[variant.value for variant in enum]}")
+        quit(1)
+    
+    return enum(string)
 
-# calculate time until bless
-delta = datetime.timedelta(hours=1)
-now = datetime.datetime.now()
-next_hour = (now + delta).replace(second=0, minute=0)
-wait_minutes = (next_hour - now).seconds/60
-wait_minutes = int(wait_minutes)
 
-print("```")
-print(f"{seperator}")
-# output !bless command
-bless_types = ['affinity', 'credit', 'resource', 'damage', 'health', 'shield']
-print(f"!bless pc {region} {relay_name} {relay_instance} {wait_minutes} min ", end = "")
-print(*bless_types[0:total_blessers])
+class Region(Enum):
+    Asia = "as"
+    Europe = "eu"
+    NorthAmerica = "na"
 
-# output roles to paste into relay chat
-print(f"{seperator}")
-print(f"BLESSING ROLES: @{affinity_bless} ---> {bless_types[0].capitalize()} | ", end = "")
-if total_blessers > 1:
-    print(f"@{credit_bless} ---> {bless_types[1].capitalize()} | ", end = "")
-if total_blessers > 2:
-    print(f"@{resource_bless} ---> {bless_types[2].capitalize()} | ", end = "")
-if total_blessers > 3:
-    print(f"@{damage_bless} ---> {bless_types[3].capitalize()} | ", end = "")
-if total_blessers > 4:
-    print(f"@{health_bless} ---> {bless_types[4].capitalize()} | ", end = "")
-if total_blessers > 5:
-    print(f"@{shield_bless} ---> {bless_types[5].capitalize()}  | ", end = "")
-print(f"Blessing in {wait_minutes} minutes", end = "")
-if total_blessers > 5:
-    print(f" | Shield bless will be delayed by 1 minute")
-else:
-    print()
-print(f"{seperator}")
 
-# nag whisper for missing blessers and list for thanks
-nag_mesage = f"Reminder for bless at {relay_name.capitalize()} {relay_instance} in {region} region. You'll be on"
-roll_call = [affinity_bless]
-print(f"/w {affinity_bless} {nag_mesage} {bless_types[0].capitalize()}")
-if total_blessers > 1:
-    print(f"/w {credit_bless} {nag_mesage} {bless_types[1].capitalize()}")
-    roll_call.append(credit_bless)
-if total_blessers > 2:
-    print(f"/w {resource_bless} {nag_mesage} {bless_types[2].capitalize()}")
-    roll_call.append(resource_bless)
-if total_blessers > 3:
-    print(f"/w {damage_bless} {nag_mesage} {bless_types[3].capitalize()}")
-    roll_call.append(damage_bless)
-if total_blessers > 4:
-    print(f"/w {health_bless} {nag_mesage} {bless_types[4].capitalize()}")
-    roll_call.append(health_bless)
-if total_blessers > 5:
-    print(f"/w {shield_bless} {nag_mesage} {bless_types[5].capitalize()}")
-    roll_call.append(shield_bless)
-print(f"{seperator}")
+class Relay(Enum):
+    Larunda = "larunda"
+    Strata = "strata"
+    Kronia = "kronia"
+    Maroo = "maroo"
+    Orcus = "orcus"
 
-# roll call and thank you message
-roll_call.remove(my_name)
-print ("Roll call. @", end = "")
-print(' @'.join(roll_call), end = "")
-print(" :clem:")
-print(f"{seperator}")
-print ("Thanks to ", end = "")
-print(', '.join(roll_call), end = "")
-print(" for blessing")
-if total_blessers > 5:
-    print(f"60 second warning to run away before shield bless")
-print("```")
-input("Press Enter to continue...")
+
+class Role(Enum):
+    Affinity = "affinity"
+    Credit = "credit"
+    Resource = "resource"
+    Damage = "damage"
+    Health = "health"
+    Shield = "shield"
+
+
+@dataclass
+class BlessConfig:
+    name: str
+    region: Region
+    instance: int
+    roles: dict[Role, str]
+
+    def __init__(self, file: str) -> None:
+        config = ConfigParser()
+        if not config.read(file):
+            print(f"\033[31mCould not read from file: '{file}'\033[0m")
+            quit(1)
+
+        # Setup
+        self.relay = assert_in_enum(config.get('bless_setup', 'relay_name'), Relay)
+        self.instance: int = config.get('bless_setup', 'relay_instance')
+
+        # Bless
+        bless_types: list[Role] = list(map(lambda role: Role(role), "affinity credit resource damage health shield".split(" ")))
+        roles: list[str] = [config.get('roles', f"{role.value}_bless") for role in bless_types]
+        self.roles: dict[Role, str] = {role: name for (role, name) in zip(bless_types, roles) if not not name}
+
+
+        # Config
+        self.name: str = config.get('config', 'my_name')
+        self.region = assert_in_enum(config.get('config', 'region'), Region)
+
+    # For debugging purposes
+    def __str__(self) -> str:
+        return f"""BlessConfig {{
+    name: {self.name},
+    region: {self.region.name},
+    relay: {self.relay.name},
+    instance: {self.instance},
+    roles: {{ {", ".join([f"{role.value}: {name}" for (role, name) in self.roles.items()]) } }}
+}}"""
+
+    def command(self) -> str:
+        # Calculate time until bless
+        delta = dt.timedelta(hours=1)
+        now = dt.datetime.now()
+        next_hour: dt.datetime = (now + delta).replace(second=0, minute=0)
+        wait_minutes: int = (next_hour - now).seconds // 60
+
+        return f"!bless pc {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
+            " ".join(map(lambda role: role.value, self.roles.keys()))
+
+
+separator: str = "=" * 80
+bless_config = BlessConfig("bless.ini" if len(sys.argv) == 1 else sys.argv[1])
+message: str = f"\n{separator}\n".join([
+    f"```", 
+    f"{bless_config.command()}",
+    f"BLESSING ROLES:\n" + \
+        "\n".join(f"@{name} => {role.name}" for (role, name) in bless_config.roles.items()) + \
+        ("\nShield bless will be delayed by 1 minute" if Role.Shield in bless_config.roles.keys() else ""),
+    "\n".join(
+        f"/w {name} Reminder for bless at {bless_config.relay.name} {bless_config.instance} in {bless_config.region.name} region. " + \
+            f"Role: {role.name}" for (role, name) in bless_config.roles.items()),
+    f"Roll call: @{' @'.join(bless_config.roles.values())} :clem:",
+    f"Thanks to {', '.join(list(bless_config.roles.values())[:-1])} and {list(bless_config.roles.values())[-1]} for blessing.",
+    "60 second warning to leave the relay before shield bless",
+    "```"
+])
+
+print(message)
