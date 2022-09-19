@@ -78,27 +78,27 @@ class BlessConfig:
     roles: {{ {", ".join([f"{role.value}: {name}" for (role, name) in self.roles.items()]) } }}
 }}"""
 
-    def command(self) -> str:
+    def command(self) -> tuple[int, str]:
         # Calculate time until bless
         delta = dt.timedelta(hours=1)
         now = dt.datetime.now()
         next_hour: dt.datetime = (now + delta).replace(second=0, minute=0)
         wait_minutes: int = (next_hour - now).seconds // 60
-        global wait_min_global
-        wait_min_global = wait_minutes
 
-        return f"!bless pc {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
+        return wait_minutes, \
+            f"!bless pc {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
             " ".join(map(lambda role: role.value, self.roles.keys()))
 
 
 separator: str = "=" * 80
 bless_config = BlessConfig("bless.ini" if len(sys.argv) == 1 else sys.argv[1])
+bless_info: tuple[int, str] = bless_config.command()
 message: str = f"\n{separator}\n".join([
     "```", 
-    f"{bless_config.command()}",
+    f"{bless_info[1]}",
     f"BLESSING ROLES: " + \
         " | ".join(f"@{name} ==> {role.name}" for (role, name) in bless_config.roles.items()) + \
-        " || Blessing in " + str(wait_min_global) + " minutes" + \
+        " || Blessing in " + str(bless_info[0]) + " minutes" + \
         (" (Shield bless will be delayed by 1 minute)" if Role.Shield in bless_config.roles.keys() else ""),
     "\n".join(
         f"/w {name} Reminder for bless at {bless_config.relay.name} {bless_config.instance} in {bless_config.region.name} region. " + \
