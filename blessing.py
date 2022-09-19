@@ -84,6 +84,8 @@ class BlessConfig:
         now = dt.datetime.now()
         next_hour: dt.datetime = (now + delta).replace(second=0, minute=0)
         wait_minutes: int = (next_hour - now).seconds // 60
+        global wait_min_global
+        wait_min_global = wait_minutes
 
         return f"!bless pc {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
             " ".join(map(lambda role: role.value, self.roles.keys()))
@@ -95,15 +97,17 @@ message: str = f"\n{separator}\n".join([
     "```", 
     f"{bless_config.command()}",
     f"BLESSING ROLES: " + \
-        " | ".join(f"@{name} => {role.name}" for (role, name) in bless_config.roles.items()) + \
-        (" || Shield bless will be delayed by 1 minute" if Role.Shield in bless_config.roles.keys() else ""),
+        " | ".join(f"@{name} ==> {role.name}" for (role, name) in bless_config.roles.items()) + \
+        " || Blessing in " + str(wait_min_global) + " minutes" + \
+        (" (Shield bless will be delayed by 1 minute)" if Role.Shield in bless_config.roles.keys() else ""),
     "\n".join(
         f"/w {name} Reminder for bless at {bless_config.relay.name} {bless_config.instance} in {bless_config.region.name} region. " + \
             f"Role: {role.name}" for (role, name) in bless_config.roles.items()),
     f"Roll call: @{' @'.join(bless_config.roles.values())} :clem:",
-    f"Thanks to @{', @'.join(list(bless_config.roles.values())[:-1])} and @{list(bless_config.roles.values())[-1]} for blessing.",
-    "60 second warning to leave the relay before shield bless",
+    f"Thanks to {', '.join(list(bless_config.roles.values())[:-1])} and {list(bless_config.roles.values())[-1]} for blessing.",
+    "60 second warning to leave the relay before shield bless" if Role.Shield in bless_config.roles.keys() else "No shield",
     "```"
 ])
 
 print(message)
+input("Press Enter to continue...")
