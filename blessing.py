@@ -86,7 +86,7 @@ class BlessConfig:
         wait_minutes: int = (next_hour - now).seconds // 60
 
         return wait_minutes, \
-            f"!bless pc {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
+            f"!bless {self.region.value} {self.relay.value} {self.instance} {wait_minutes} min " + \
             " ".join(map(lambda role: role.value, self.roles.keys()))
 
 
